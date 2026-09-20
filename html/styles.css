@@ -134,6 +134,11 @@
   .menu-toggle span:nth-child(2){top:10px;}
   .menu-toggle span:nth-child(3){top:20px;}
 
+  .logo-black { display: none; }
+  .logo-white { display: block; }
+  
+  .solid .logo-black { display: block; }
+  .solid .logo-white { display: none; }
   /* ---------- HERO ---------- */
   .hero{
     position:relative; min-height:100svh;
@@ -203,18 +208,21 @@
   }
 
   /* ---------- STORY ---------- */
-  .story{background:var(--white);}
+  .story{background:var(--marsh);}
+  .story h2{color:var(--white);}
+  .story .eyebrow{color:var(--straw); }
+  .story .lede{color:var(--white)}
   .story-grid{
     display:grid; grid-template-columns:repeat(3,1fr); gap:2px;
     background:rgba(30,42,32,0.12);
   }
-  .story-card{background:var(--white); padding:clamp(28px,3vw,40px); display:flex; flex-direction:column; gap:18px;}
-  .story-card .yr{font-family:var(--display); font-size:0.85rem; color:var(--rust);}
+  .story-card{background:var(--marsh); padding:clamp(28px,3vw,40px); display:flex; flex-direction:column; gap:18px;}
+  .story-card .yr{font-family:var(--display); font-size:0.85rem; color:var(--straw);}
   .story-card figure{overflow:hidden; border-radius:2px;}
   .story-card img{width:100%; height:220px; object-fit:cover; transition:transform .6s ease;}
   .story-card:hover img{transform:scale(1.06);}
-  .story-card p{color:var(--stone); font-size:0.96rem;}
-  .story-card h3{margin-top:2px;}
+  .story-card p{color:var(--white); font-size:0.96rem;}
+  .story-card h3{margin-top:2px; color:var(--white);}
 
   /* ---------- STAY ---------- */
   .stay{background:var(--marsh); color:var(--white);}
@@ -222,7 +230,7 @@
   .stay .eyebrow::before{background:var(--straw);}
   .stay h2{color:var(--white);}
   .stay .lede{color:var(--dyke-pale);}
-  .stay-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:20px;}
+  .stay-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:28px; margin-top:20px;}
   .stay-card{
     background:var(--marsh-deep);
     border:1px solid rgba(251,250,245,0.1);
