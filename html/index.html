@@ -34,12 +34,46 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-media">
-      <img src="https://static.wixstatic.com/media/35e212_b66af95f8e0947a2ab3ca6c362516101~mv2.jpg/v1/fill/w_2500,h_1790,al_c/35e212_b66af95f8e0947a2ab3ca6c362516101~mv2.jpg" alt="Fields and open sky at Jessamine Farm, Romney Marsh">
+    <!--HERO MEDIA W/ carrosel-->
+    <div class="hero-media active">
+      <img src="./assets/images/hero1.jpg" alt="Fields and open sky at Jessamine Farm, Romney Marsh">
     </div>
+    <div class="hero-media">
+      <img src="./assets/images/hero2.jpg" alt="A caravan parked at Jessamine Farm, Romney Marsh">
+    </div>
+    <div class="hero-media">
+      <img src="./assets/images/hero3.jpg" alt="A tent pitched at Jessamine Farm, Romney Marsh">
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Select all background layers
+            const layers = document.querySelectorAll('.hero-media');
+            let currentIndex = 0;
+            
+            // Configuration for timing
+            const displayDuration = 5000; // 5 seconds per image before transition begins
+
+            // Function to handle the transition
+            const switchImage = () => {
+                // Remove active class from current image
+                layers[currentIndex].classList.remove('active');
+                
+                // Calculate next index (loop back to 0 if at the end)
+                currentIndex = (currentIndex + 1) % layers.length;
+                
+                // Add active class to next image
+                layers[currentIndex].classList.add('active');
+            };
+
+            // Start the interval
+            setInterval(switchImage, displayDuration);
+        });
+    </script>
+
     <div class="wrap hero-inner">
       <p class="hero-tag"><span class="dot"></span> Touring caravan park &amp; pop-up campsite</p>
-      <h1>A family home since 1978, <em>deep in the Romney Marsh.</em></h1>
+      <h1><em>A family home since 1978, deep in the Romney Marsh.</em></h1>
       <p class="hero-sub">The Hicks family have been welcoming visitors to this unusual corner of Kent for almost fifty years — touring pitches, a summer pop-up campsite, and caravan storage, all a short walk from the marsh's oldest stories.</p>
       <div class="hero-actions">
         <a href="#stay" class="btn btn-primary">Find Your Pitch</a>
