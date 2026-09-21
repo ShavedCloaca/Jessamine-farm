@@ -1,8 +1,17 @@
-# Use the official NGINX unprivileged Alpine slim image
-FROM nginxinc/nginx-unprivileged:alpine-slim
+# Stage 1: Build & install production dependencies
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --only=production
+COPY . .
 
-# Copy your static website files to the default NGINX public directory
-COPY html/ /usr/share/nginx/html/
+# Stage 2: Production execution environment
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=builder /app /app
 
-# Expose port 8080 (the default unprivileged port for this image)
+# Switch to the unprivileged 'node' user (UID 1000) for hardening
+USER node
 EXPOSE 8080
+
+CMD ["node", "server.js"]
