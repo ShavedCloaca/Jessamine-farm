@@ -615,10 +615,59 @@
   });
 
   // Contact form (visual mock — no backend)
-  document.getElementById('contactForm').addEventListener('submit', (e) => {
+  document.getElementById('contactForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    document.getElementById('formMsg').classList.add('show');
-    e.target.reset();
+
+    const formMsg = document.getElementById('formMsg');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.textContent;
+
+    // 1. Gather data from the form
+    const formData = {
+      fname: document.getElementById('fname').value,
+      lname: document.getElementById('lname').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      staytype: document.getElementById('staytype').value,
+      message: document.getElementById('message').value
+    };
+
+    // 2. Show loading state on the button
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    formMsg.classList.remove('show'); // Hide message if it was already showing
+
+    try {
+      // 3. Send POST request to your Node.js backend
+      // IMPORTANT: Change this URL if your backend is hosted on a different domain/port
+      const response = await fetch('/api/contact', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        // Success! Show the success message and clear the form
+        formMsg.textContent = "Thanks — we'll be in touch soon!";
+        formMsg.style.color = "green"; // Optional styling
+        formMsg.classList.add('show');
+        e.target.reset();
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    } catch (error) {
+      // Handle errors (e.g., server down, network issue)
+      console.error('Submission failed:', error);
+      formMsg.textContent = "Oops! Something went wrong. Please try again later.";
+      formMsg.style.color = "red"; // Optional styling for errors
+      formMsg.classList.add('show');
+    } finally {
+      // 4. Restore the button state
+      submitBtn.textContent = originalBtnText;
+      submitBtn.disabled = false;
+    }
   });
 </script>
 
