@@ -494,6 +494,15 @@
     .contact-layout{grid-template-columns:1fr;}
     .routes-panel{grid-template-columns:1fr;}
     .footer-top{grid-template-columns:1fr 1fr;}
+
+    /* Force links to be light when the menu is actively open and scrolled */
+    header.solid nav.primary-nav.open a {color: var(--wool) !important;}
+
+     /* Force the hamburger icon to be light when the menu is actively open and scrolled */
+    header.solid .menu-toggle[aria-expanded="true"] span {background: var(--white) !important;}
+    header.solid:has(.primary-nav.open) {
+    backdrop-filter: none !important;
+  }
   }
   @media (max-width:600px){
     .cardgrid{grid-template-columns:1fr;}
