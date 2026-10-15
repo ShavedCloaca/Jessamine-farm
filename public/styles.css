@@ -383,7 +383,31 @@
     display:flex; justify-content:space-between; align-items:center; padding-top:26px;
     font-size:0.82rem; flex-wrap:wrap; gap:12px;
   }
-
+  /* ---------- TERMS ---------- */
+    .terms-content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Work Sans', sans-serif;
+    line-height: 1.6;
+  }
+  .terms-content h2 {
+    font-family: 'Fraunces', serif;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+  }
+  .terms-content h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+  }
+  .terms-content p, .terms-content ul {
+    margin-bottom: 1rem;
+    color: var(--wool-6, #333);
+  }
+  .terms-content ul {
+    padding-left: 1.5rem;
+  }
   /* ---------- RESPONSIVE ---------- */
   @media (max-width:980px){
     nav.primary-nav{
