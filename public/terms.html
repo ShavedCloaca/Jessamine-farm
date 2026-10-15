@@ -283,16 +283,26 @@
 </footer>
 
 <script>
-  // Mobile nav
+ // Mobile nav
   const menuToggle = document.getElementById('menuToggle');
   const primaryNav = document.getElementById('primaryNav');
+
   menuToggle.addEventListener('click', () => {
     const isOpen = primaryNav.classList.toggle('open');
     menuToggle.setAttribute('aria-expanded', isOpen);
+    
+    // Manage the blur effect to respect the CSS animation timing
+    if (isOpen) {
+      header.classList.add('menu-active');
+    } else {
+      setTimeout(() => header.classList.remove('menu-active'), 400); 
+    }
   });
+
   primaryNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
     primaryNav.classList.remove('open');
     menuToggle.setAttribute('aria-expanded', false);
+    setTimeout(() => header.classList.remove('menu-active'), 400);
   }));
 </script>
 

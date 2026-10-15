@@ -503,6 +503,20 @@
     header.solid:has(.primary-nav.open) {
     backdrop-filter: none !important;
   }
+  /* 1. Keep links light inside the mobile menu at all times */
+    header.solid nav.primary-nav a {
+    color: var(--wool) !important;
+    }
+
+  /* 2. Tie the backdrop-filter removal to a dedicated delayed class */
+    header.solid.menu-active {
+    backdrop-filter: none !important;
+    }
+
+  /* 3. Keep the hamburger icon light only when actively open */
+    header.solid .menu-toggle[aria-expanded="true"] span {
+    background: var(--white) !important;
+    }
   }
   @media (max-width:600px){
     .cardgrid{grid-template-columns:1fr;}
