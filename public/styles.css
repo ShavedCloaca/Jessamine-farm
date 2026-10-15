@@ -287,6 +287,12 @@
     border-bottom:1px solid transparent;
   }
   .place-card a.visit:hover{border-color:var(--rust);}
+  a.visit{
+    display:inline-block; margin-top:12px; font-weight:600; color:var(--rust);
+    border-bottom:1px solid transparent;
+  }
+  a.visit:hover{border-color:var(--rust);}
+
 
   .routes-panel{display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;}
   .route-block + .route-block{border-top:1px solid rgba(30,42,32,0.12); padding-top:24px; margin-top:24px;}
