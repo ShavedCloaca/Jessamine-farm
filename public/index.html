@@ -44,13 +44,13 @@
   <section class="hero">
     <!--HERO MEDIA W/ carrosel-->
     <div class="hero-media active">
-      <img src="./assets/images/hero1.jpg" alt="Fields and open sky at Jessamine Farm, Romney Marsh">
+      <img src="./assets/images/hero1.webp" alt="Fields and open sky at Jessamine Farm, Romney Marsh">
     </div>
     <div class="hero-media">
-      <img src="./assets/images/hero2.jpg" alt="A caravan parked at Jessamine Farm, Romney Marsh">
+      <img src="./assets/images/hero2.webp" alt="A caravan parked at Jessamine Farm, Romney Marsh">
     </div>
     <div class="hero-media">
-      <img src="./assets/images/hero3.jpg" alt="A tent pitched at Jessamine Farm, Romney Marsh">
+      <img src="./assets/images/hero3.webp" alt="A tent pitched at Jessamine Farm, Romney Marsh">
     </div>
 
     <script>
@@ -211,24 +211,24 @@
         <button class="tab-btn" data-tab="routes" role="tab" aria-selected="false">Walking &amp; Cycling</button>
       </div>
       <div class="tab-panel active" id="panel-farm">
-        <img class="todo-banner" src="./assets/images/farm.jpg" alt="Farm from the road">
+        <img class="todo-banner" src="./assets/images/farm.webp" alt="Farm from the road">
         <div class="cardgrid">
           <article class="place-card">
-            <figure><img src="./assets/images/tipsybroom2.jpg" alt="The farm's café"></figure>
+            <figure><img src="./assets/images/tipsybroom2.webp" alt="The farm's café"></figure>
             <div class="pc-body">
               <h4>The Tipsy Broomstick</h4>
               <p>Open to the public, our café serves specialty coffee and sweet treats, with a menu that changes with the seasons. The Tipsy Broomstick is open for 3 nights a week serving alcohol.</p>
             </div>
           </article>
           <article class="place-card">
-            <figure><img src="./assets/images/ponies.jpg" alt="The farm's rescue ponies"></figure>
+            <figure><img src="./assets/images/ponies.webp" alt="The farm's rescue ponies"></figure>
             <div class="pc-body">
               <h4>Puff, Paddy and Misty, the rescue ponies</h4>
               <p>Jessamine's rescued ponies are a gentle and friendly presence on the farm, offering visitors a chance to get up close and personal with these beautiful animals. Keep an eye out for their carers Kirtsy and Bea giving them a walk around the farm.</p>
             </div>
           </article>
           <article class="place-card">
-            <figure><img src="./assets/images/orchard.jpg" alt="The farm's orchard"></figure>
+            <figure><img src="./assets/images/orchard.webp" alt="The farm's orchard"></figure>
             <div class="pc-body">
               <h4>The Farm Orchard</h4>
               <p>Our orchard is home to a variety of fruit trees, including apples, pears, and plums. It's a great place to pick your own fruit in the summer months. Its also a lovely place to walk your dogs or enjoy a picnic</p>
@@ -615,10 +615,59 @@
   });
 
   // Contact form (visual mock — no backend)
-  document.getElementById('contactForm').addEventListener('submit', (e) => {
+  document.getElementById('contactForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    document.getElementById('formMsg').classList.add('show');
-    e.target.reset();
+
+    const formMsg = document.getElementById('formMsg');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.textContent;
+
+    // 1. Gather data from the form
+    const formData = {
+      fname: document.getElementById('fname').value,
+      lname: document.getElementById('lname').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      staytype: document.getElementById('staytype').value,
+      message: document.getElementById('message').value
+    };
+
+    // 2. Show loading state on the button
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    formMsg.classList.remove('show'); // Hide message if it was already showing
+
+    try {
+      // 3. Send POST request to your Node.js backend
+      // IMPORTANT: Change this URL if your backend is hosted on a different domain/port
+      const response = await fetch('/api/contact', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        // Success! Show the success message and clear the form
+        formMsg.textContent = "Thanks — we'll be in touch soon!";
+        formMsg.style.color = "green"; // Optional styling
+        formMsg.classList.add('show');
+        e.target.reset();
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    } catch (error) {
+      // Handle errors (e.g., server down, network issue)
+      console.error('Submission failed:', error);
+      formMsg.textContent = "Oops! Something went wrong. Please try again later.";
+      formMsg.style.color = "red"; // Optional styling for errors
+      formMsg.classList.add('show');
+    } finally {
+      // 4. Restore the button state
+      submitBtn.textContent = originalBtnText;
+      submitBtn.disabled = false;
+    }
   });
 </script>
 
