@@ -494,7 +494,7 @@
     .contact-layout{grid-template-columns:1fr;}
     .routes-panel{grid-template-columns:1fr;}
     .footer-top{grid-template-columns:1fr 1fr;}
-
+    .todo-banner{display:none;}
     /* Force links to be light when the menu is actively open and scrolled */
     header.solid nav.primary-nav.open a {color: var(--wool) !important;}
 
