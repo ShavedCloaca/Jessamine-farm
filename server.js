@@ -22,8 +22,13 @@ const transporter = nodemailer.createTransport({
 
 // 1. THIS IS THE MAGIC LINE FOR YOUR HTML/CSS
 // It tells Express: "Take everything in the 'public' folder and serve it exactly as it is"
-app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, 'public'), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.xml')) {
+      res.setHeader('Content-Type', 'application/xml');
+    }
+  }
+}));
 // 2. Kubernetes Health Probe Endpoint
 // k3s will ping this every few seconds to make sure your app hasn't crashed
 app.get('/health', (req, res) => {
