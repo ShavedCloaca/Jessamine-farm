@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const nodemailer = require('nodemailer');
+const promClient = require('prom-client');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -66,7 +67,48 @@ app.post('/api/contact', async (req, res) => {
     res.status(500).json({ success: false, error: 'Failed to send email' });
   }
 });
+// 1. Enable default Node.js system metrics (CPU, Memory, Event Loop Lag)
+promClient.collectDefaultMetrics({ prefix: 'node_' });
 
+// 2. Define custom HTTP traffic metrics
+const httpRequestCounter = new promClient.Counter({
+  name: 'http_requests_total',
+  help: 'Total number of HTTP requests made',
+  labelNames: ['method', 'route', 'status_code']
+});
+
+const httpRequestDurationHistogram = new promClient.Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'Duration of HTTP requests in seconds',
+  labelNames: ['method', 'route', 'status_code'],
+  buckets: [0.05, 0.1, 0.3, 0.5, 1, 2, 5] // Latency buckets in seconds
+});
+
+// 3. Middleware to track all incoming traffic
+app.use((req, res, next) => {
+  const start = Date.now();
+
+  res.on('finish', () => {
+    const duration = (Date.now() - start) / 1000;
+    // Standardize route path for Prometheus labels (prevents high-cardinality issues)
+    const route = req.route ? req.route.path : req.path;
+
+    httpRequestCounter.labels(req.method, route, res.statusCode).inc();
+    httpRequestDurationHistogram.labels(req.method, route, res.statusCode).observe(duration);
+  });
+
+  next();
+});
+
+// 4. Expose the /metrics endpoint for Prometheus
+app.get('/metrics', async (req, res) => {
+  try {
+    res.set('Content-Type', promClient.register.contentType);
+    res.end(await promClient.register.metrics());
+  } catch (err) {
+    res.status(500).end(err);
+  }
+});
 // 4. Default Fallback
 // If a user goes to a weird URL that doesn't exist, just send them back to the homepage
 app.get('*', (req, res) => {
